@@ -9,10 +9,94 @@
     <link rel="apple-touch-icon" href="apple-touch-icon.png" />
     <link rel="shortcut icon" href="${make_url('/static/img/favicon.ico', appendcachebust=true)}" />
   </head>
-  <body>
-    <script src="${make_url('/config?autoload=1', appendcachebust=true)}" crossorigin="use-credentials" ></script>
-    <script src="${make_url('/static/js/i18n.js', appendcachebust=true)}"></script>
-    <script src="${make_url('/i18ncatalog?autoload=1', appendcachebust=true)}"></script>
+  </body>
+</html>
+
+<script>
+  (function () {
+    // Insert a display-only settings panel when the Settings page is shown.
+    function createSettingsPanel() {
+      var panel = document.createElement('div');
+      panel.id = 'custom-llm-settings-panel';
+      panel.style.border = '1px solid #ddd';
+      panel.style.padding = '12px';
+      panel.style.margin = '12px 0';
+      panel.style.borderRadius = '6px';
+      panel.style.background = '#fff';
+      panel.style.maxWidth = '720px';
+
+      var title = document.createElement('h3');
+      title.innerText = 'LLM Settings (display only)';
+      title.style.marginTop = '0';
+      panel.appendChild(title);
+
+      var modelLabel = document.createElement('label');
+      modelLabel.innerText = 'Model: ';
+      modelLabel.style.display = 'block';
+      modelLabel.style.marginBottom = '6px';
+      var modelSelect = document.createElement('select');
+      modelSelect.style.minWidth = '220px';
+      ['Copilot','ChatGPT','Claude','Llama','Mistral'].forEach(function(m){
+        var opt = document.createElement('option'); opt.value = m; opt.innerText = m; modelSelect.appendChild(opt);
+      });
+      modelLabel.appendChild(modelSelect);
+      panel.appendChild(modelLabel);
+
+      var inputLabel = document.createElement('label');
+      inputLabel.innerText = 'Input token limit: ';
+      inputLabel.style.display = 'block';
+      inputLabel.style.marginTop = '8px';
+      var inputNum = document.createElement('input');
+      inputNum.type = 'number'; inputNum.min = '0'; inputNum.value = '2048'; inputNum.style.width = '120px';
+      inputLabel.appendChild(inputNum);
+      panel.appendChild(inputLabel);
+
+      var outputLabel = document.createElement('label');
+      outputLabel.innerText = 'Output token limit: ';
+      outputLabel.style.display = 'block';
+      outputLabel.style.marginTop = '8px';
+      var outputNum = document.createElement('input');
+      outputNum.type = 'number'; outputNum.min = '0'; outputNum.value = '512'; outputNum.style.width = '120px';
+      outputLabel.appendChild(outputNum);
+      panel.appendChild(outputLabel);
+
+      var note = document.createElement('div');
+      note.innerText = 'Note: these controls are display-only and not applied.';
+      note.style.marginTop = '8px'; note.style.color = '#666'; note.style.fontSize = '0.9em';
+      panel.appendChild(note);
+
+      return panel;
+    }
+
+    function insertWhenSettingsVisible() {
+      try {
+        var headings = document.querySelectorAll('h1,h2,h3');
+        for (var i = 0; i < headings.length; i++) {
+          var h = headings[i];
+          if (/^\s*Settings\s*$/.test(h.innerText)) {
+            if (document.getElementById('custom-llm-settings-panel')) return;
+            var panel = createSettingsPanel();
+            h.parentNode.insertBefore(panel, h.nextSibling);
+            return;
+          }
+        }
+      } catch (e) {
+        console.error('Error inserting custom settings panel', e);
+      }
+    }
+
+    var mo = new MutationObserver(function () { insertWhenSettingsVisible(); });
+    mo.observe(document.body, { childList: true, subtree: true });
+
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+      insertWhenSettingsVisible();
+    } else {
+      window.addEventListener('DOMContentLoaded', insertWhenSettingsVisible);
+    }
+  })();
+</script>
+
+```
     <script>
       __splunkd_partials__ = ${json_decode(splunkd)};
     </script>

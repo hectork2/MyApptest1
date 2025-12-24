@@ -44,7 +44,7 @@ class SAIAAsyncJobsModularInput(JsonModularInput, BaseRestUtils):
     def __init__(self, this_logger: logging.Logger = logger):
         environment.app_root = os.path.join(os.path.dirname(__file__), "..")
         scheme_args = {
-            "title": "Splunk AI Assistant for SPL Async Jobs Modular Input",
+            "title": "Douran Assitant for SPL Async Jobs Modular Input",
             "description": "Runs streaming HTTP requests to SAIA service",
             "use_external_validation": "true",
             "streaming_mode": "json",

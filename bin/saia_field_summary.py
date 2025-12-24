@@ -168,7 +168,7 @@ class SAIAFieldSummaryModularInput(JsonModularInput):
     def __init__(self, this_logger: logging.Logger = logger):
         environment.app_root = os.path.join(os.path.dirname(__file__), "..")
         scheme_args = {
-            "title": "Splunk AI Assistant for SPL Field Summary Modular Input",
+            "title": "Douran Assitant for SPL Field Summary Modular Input",
             "description": "Collects field summary context for personalized SPL generation",
             "use_external_validation": "true",
             "streaming_mode": "json",

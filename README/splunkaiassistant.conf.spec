@@ -1,5 +1,5 @@
 [splunk_ai_assistant]
-* configuration for splunk ai assistant
+* configuration for Douran Assitant
 
 [cloud_connected_configurations]
 * configuration related to SAIA cloud connected

@@ -11,9 +11,9 @@ DATA_ID_INDEXED_FIELDS = "indexed_fields"
 DATA_ID_USER_SEARCH_LOGS = "user_search_logs"
 DATA_ID_EXTERNAL_LLM = "external_llm"
 
-SAVED_SEARCH_TELEMETRY = "Splunk AI Assistant for SPL - Telemetry"
-SAVED_SEARCH_FEEDBACK_TELEMETRY = "Splunk AI Assistant for SPL - Feedback Telemetry"
-SAVED_SEARCH_OPEN_IN_SEARCH_TELEMETRY = "Splunk AI Assistant for SPL - Open In Search Telemetry"
+SAVED_SEARCH_TELEMETRY = "Douran Assitant for SPL - Telemetry"
+SAVED_SEARCH_FEEDBACK_TELEMETRY = "Douran Assitant for SPL - Feedback Telemetry"
+SAVED_SEARCH_OPEN_IN_SEARCH_TELEMETRY = "Douran Assitant for SPL - Open In Search Telemetry"
 AI_SERVICE_DATA_SEARCHES = [
     SAVED_SEARCH_TELEMETRY,
     SAVED_SEARCH_OPEN_IN_SEARCH_TELEMETRY
@@ -21,10 +21,10 @@ AI_SERVICE_DATA_SEARCHES = [
 FEEDBACK_SAVED_SEARCHES = [
     SAVED_SEARCH_FEEDBACK_TELEMETRY,
 ]
-SAVED_SEARCH_SEARCH_LOGS_INITIAL = "Splunk AI Assistant for SPL - Search Logs - initial"
-SAVED_SEARCH_SEARCH_LOGS = "Splunk AI Assistant for SPL - Search Logs"
-SAVED_SEARCH_FIELD_SUMMARY = "Splunk AI Assistant for SPL - Field Summary"
-SAVED_SEARCH_INDEXED_FIELDS = "Splunk AI Assistant for SPL - Indexed Fields"
+SAVED_SEARCH_SEARCH_LOGS_INITIAL = "Douran Assitant for SPL - Search Logs - initial"
+SAVED_SEARCH_SEARCH_LOGS = "Douran Assitant for SPL - Search Logs"
+SAVED_SEARCH_FIELD_SUMMARY = "Douran Assitant for SPL - Field Summary"
+SAVED_SEARCH_INDEXED_FIELDS = "Douran Assitant for SPL - Indexed Fields"
 MODULAR_INPUT_FIELD_SUMMARY = ("saia_field_summary", "default")
 MODULAR_INPUT_SAIA_ASYNC_JOBS = ("saia_async_jobs", "default")
 

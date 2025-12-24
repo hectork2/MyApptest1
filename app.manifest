@@ -1,7 +1,7 @@
 {
   "schemaVersion": "2.0.0",
   "info": {
-    "title": "Splunk AI Assistant for SPL",
+    "title": "Douran Assitant for SPL",
     "id": {
       "group": null,
       "name": "Splunk_AI_Assistant_Cloud",
@@ -15,7 +15,7 @@
       }
     ],
     "releaseDate": null,
-    "description": "Splunk AI Assistant for SPL empowers users to search data using normal English.",
+    "description": "Douran Assitant for SPL empowers users to search data using normal English.",
     "classification": {
       "intendedAudience": null,
       "categories": ["IoT & Industrial Data", " Utilities", " Business Analytics"],

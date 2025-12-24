@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "2.0.0",
+  "info": {
+    "title": "Splunk AI Assistant for SPL",
+    "id": {
+      "group": null,
+      "name": "Splunk_AI_Assistant_Cloud",
+      "version": "1.4.0"
+    },
+    "author": [
+      {
+        "name": "Splunk, Inc.",
+        "email": "mlsupport@splunk.com",
+        "company": null
+      }
+    ],
+    "releaseDate": null,
+    "description": "Splunk AI Assistant for SPL empowers users to search data using normal English.",
+    "classification": {
+      "intendedAudience": null,
+      "categories": ["IoT & Industrial Data", " Utilities", " Business Analytics"],
+      "developmentStatus": null
+    },
+    "commonInformationModels": null,
+    "license": {
+      "name": "Splunk Software License Agreement",
+      "text": null,
+      "uri": "https://www.splunk.com/en_us/legal/splunk-software-license-agreement.html"
+    },
+    "privacyPolicy": {
+      "name": null,
+      "text": null,
+      "uri": null
+    },
+    "releaseNotes": {
+      "name": null,
+      "text": null,
+      "uri": null
+    }
+  },
+  "tasks": [
+    "saia_field_summary://default",
+    "saia_field_summary",
+    "saia_async_jobs://default",
+    "saia_async_jobs"
+  ],
+  "supportedDeployments": [
+    "_standalone",
+    "_search_head_clustering"
+  ],
+  "targetWorkloads": [
+    "_search_heads"
+  ]
+}

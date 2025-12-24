@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<view template="Splunk_AI_Assistant_Cloud:/template/setup_page.html" type="html">
+	<label>Setup Page</label>
+</view>

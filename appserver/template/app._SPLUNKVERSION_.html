@@ -14,84 +14,61 @@
 
 <script>
   (function () {
-    // Insert a display-only settings panel when the Settings page is shown.
-    function createSettingsPanel() {
-      var panel = document.createElement('div');
-      panel.id = 'custom-llm-settings-panel';
-      panel.style.border = '1px solid #ddd';
-      panel.style.padding = '12px';
-      panel.style.margin = '12px 0';
-      panel.style.borderRadius = '6px';
-      panel.style.background = '#fff';
-      panel.style.maxWidth = '720px';
+    // Create a quick, display-only modal for Settings and intercept sidebar clicks
+    function createSettingsModal() {
+      var wrapper = document.createElement('div');
+      wrapper.id = 'quick-settings-modal';
+      wrapper.innerHTML = '\n+        <div id="quick-settings-backdrop" style="position:fixed;inset:0;background:rgba(0,0,0,0.35);z-index:9998;"></div>\n+        <div id="quick-settings-box" style="position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:9999;background:#fff;border-radius:8px;padding:18px;max-width:720px;width:90%;box-shadow:0 8px 24px rgba(0,0,0,0.2);">\n+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">\n+            <h3 style="margin:0">LLM Settings (display only)</h3>\n+            <button id="quick-settings-close" style="background:transparent;border:0;font-size:18px;cursor:pointer">✕</button>\n+          </div>\n+          <div style="margin-top:8px">\n+            <label style="display:block;margin-bottom:6px">Model:\n+              <select id="quick-settings-model" style="min-width:220px;margin-left:8px">\n+                <option>Copilot</option>\n+                <option>ChatGPT</option>\n+                <option>Claude</option>\n+                <option>Llama</option>\n+                <option>Mistral</option>\n+              </select>\n+            </label>\n+            <label style="display:block;margin-top:8px">Input token limit: <input id="quick-settings-input" type="number" min="0" value="2048" style="width:120px;margin-left:8px"/></label>\n+            <label style="display:block;margin-top:8px">Output token limit: <input id="quick-settings-output" type="number" min="0" value="512" style="width:120px;margin-left:8px"/></label>\n+            <div style="margin-top:10px;color:#666;font-size:0.9em">These controls are display-only and are not applied to the app.</div>\n+            <div style="margin-top:12px;display:flex;gap:8px">\n+              <button id="quick-settings-close2" style="padding:6px 10px">Close</button>\n+              <button id="quick-settings-open-full" style="padding:6px 10px;background:#006EAA;color:#fff;border:0;border-radius:4px">Open full Settings</button>\n+            </div>\n+          </div>\n+        </div>';
+      return wrapper;
+    }
 
-      var title = document.createElement('h3');
-      title.innerText = 'LLM Settings (display only)';
-      title.style.marginTop = '0';
-      panel.appendChild(title);
-
-      var modelLabel = document.createElement('label');
-      modelLabel.innerText = 'Model: ';
-      modelLabel.style.display = 'block';
-      modelLabel.style.marginBottom = '6px';
-      var modelSelect = document.createElement('select');
-      modelSelect.style.minWidth = '220px';
-      ['Copilot','ChatGPT','Claude','Llama','Mistral'].forEach(function(m){
-        var opt = document.createElement('option'); opt.value = m; opt.innerText = m; modelSelect.appendChild(opt);
+    function showSettingsModal() {
+      if (document.getElementById('quick-settings-modal')) return;
+      var modal = createSettingsModal();
+      document.body.appendChild(modal);
+      // hook up close
+      var remove = function() { var el = document.getElementById('quick-settings-modal'); if (el) el.remove(); };
+      document.getElementById('quick-settings-close').addEventListener('click', remove);
+      document.getElementById('quick-settings-close2').addEventListener('click', remove);
+      document.getElementById('quick-settings-backdrop').addEventListener('click', remove);
+      document.getElementById('quick-settings-open-full').addEventListener('click', function () {
+        // open full Settings via URL (may show spinner but gives access to real settings)
+        var sp = new URLSearchParams(window.location.search || '');
+        sp.set('tab', 'settings');
+        window.location.search = sp.toString();
       });
-      modelLabel.appendChild(modelSelect);
-      panel.appendChild(modelLabel);
-
-      var inputLabel = document.createElement('label');
-      inputLabel.innerText = 'Input token limit: ';
-      inputLabel.style.display = 'block';
-      inputLabel.style.marginTop = '8px';
-      var inputNum = document.createElement('input');
-      inputNum.type = 'number'; inputNum.min = '0'; inputNum.value = '2048'; inputNum.style.width = '120px';
-      inputLabel.appendChild(inputNum);
-      panel.appendChild(inputLabel);
-
-      var outputLabel = document.createElement('label');
-      outputLabel.innerText = 'Output token limit: ';
-      outputLabel.style.display = 'block';
-      outputLabel.style.marginTop = '8px';
-      var outputNum = document.createElement('input');
-      outputNum.type = 'number'; outputNum.min = '0'; outputNum.value = '512'; outputNum.style.width = '120px';
-      outputLabel.appendChild(outputNum);
-      panel.appendChild(outputLabel);
-
-      var note = document.createElement('div');
-      note.innerText = 'Note: these controls are display-only and not applied.';
-      note.style.marginTop = '8px'; note.style.color = '#666'; note.style.fontSize = '0.9em';
-      panel.appendChild(note);
-
-      return panel;
     }
 
-    function insertWhenSettingsVisible() {
-      try {
-        var headings = document.querySelectorAll('h1,h2,h3');
-        for (var i = 0; i < headings.length; i++) {
-          var h = headings[i];
-          if (/^\s*Settings\s*$/.test(h.innerText)) {
-            if (document.getElementById('custom-llm-settings-panel')) return;
-            var panel = createSettingsPanel();
-            h.parentNode.insertBefore(panel, h.nextSibling);
-            return;
-          }
+    function attachInterceptor() {
+      var sidebarItem = document.querySelector('[data-test="sidebar-Settings"]');
+      if (!sidebarItem) return false;
+      // use capture to run before React synthetic handlers
+      var handler = function (e) {
+        // Only intercept left-clicks / keyboard Enter/Space
+        if (e.type === 'click' || e.key === 'Enter' || e.key === ' ') {
+          e.stopPropagation();
+          e.preventDefault();
+          showSettingsModal();
         }
-      } catch (e) {
-        console.error('Error inserting custom settings panel', e);
-      }
+      };
+      sidebarItem.addEventListener('click', handler, true);
+      sidebarItem.addEventListener('keydown', function(e){ if (e.key === 'Enter' || e.key === ' ') handler(e); }, true);
+      // remember we attached
+      sidebarItem.setAttribute('data-quick-settings-attached','true');
+      return true;
     }
 
-    var mo = new MutationObserver(function () { insertWhenSettingsVisible(); });
-    mo.observe(document.body, { childList: true, subtree: true });
+    function tryAttach() {
+      if (attachInterceptor()) return;
+      // retry a few times while app bootstraps
+      var tries = 0;
+      var t = setInterval(function(){ tries++; if (attachInterceptor() || tries>20) clearInterval(t); }, 300);
+    }
 
-    if (document.readyState === 'complete' || document.readyState === 'interactive') {
-      insertWhenSettingsVisible();
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', tryAttach);
     } else {
-      window.addEventListener('DOMContentLoaded', insertWhenSettingsVisible);
+      tryAttach();
     }
   })();
 </script>
